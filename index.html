@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#c4221b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Taxi">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-180.png">
+<title>Taxi Alcúdia</title>
+<style>
+/* Layout: one column phone card list; language switch is CSS-only radios (works without JS) */
+:root{
+  --bg:#f3f6f8; --card:#ffffff; --ink:#14212b; --muted:#5b6b77;
+  --line:#dbe3e9; --accent:#0a6aa1; --accent-ink:#ffffff; --warn-bg:#fff4dc; --warn-ink:#6a4a00; --red:#c4221b; --red-ink:#ffffff;
+  --num:"SF Pro Display",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  --body:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e161c; --card:#16222b; --ink:#e8eef2; --muted:#9aabb7;
+  --line:#26343f; --accent:#3aa3dc; --accent-ink:#06141d; --warn-bg:#2e2510; --warn-ink:#f1d48a; --red:#ff6b62; --red-ink:#1d0605; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e161c; --card:#16222b; --ink:#e8eef2; --muted:#9aabb7;
+  --line:#26343f; --accent:#3aa3dc; --accent-ink:#06141d; --warn-bg:#2e2510; --warn-ink:#f1d48a; --red:#ff6b62; --red-ink:#1d0605; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.4}
+.wrap{max-width:560px;margin:0 auto;padding-block:18px 40px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:18px}
+input.lang{position:absolute;opacity:0;pointer-events:none}
+.switch{display:grid;grid-template-columns:1fr 1fr;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px;gap:4px}
+.switch label{text-align:center;padding:12px 8px;border-radius:10px;font-weight:600;font-size:17px;color:var(--muted);cursor:pointer}
+#l-en:checked ~ .switch label[for=l-en], #l-ko:checked ~ .switch label[for=l-ko]{background:var(--accent);color:var(--accent-ink)}
+#l-en:focus-visible ~ .switch label[for=l-en], #l-ko:focus-visible ~ .switch label[for=l-ko]{outline:3px solid var(--accent);outline-offset:2px}
+.page{display:none;flex-direction:column;gap:18px}
+#l-en:checked ~ .p-en, #l-ko:checked ~ .p-ko{display:flex}
+h1{font-size:28px;line-height:1.15;margin:0;text-wrap:balance}
+.date{color:var(--muted);font-size:15px;margin-top:4px}
+h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:6px 0 0;font-weight:700}
+.list{display:flex;flex-direction:column;gap:10px}
+.row{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 14px 14px 16px;
+  display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center}
+.row.main{border:2px solid var(--accent)}
+.name{font-weight:600;font-size:17px;min-width:0}
+.where{color:var(--muted);font-size:14px;grid-column:1}
+.tel{grid-column:1;font-family:var(--num);font-weight:700;font-size:34px;letter-spacing:.02em;color:var(--accent);
+  text-decoration:none;font-variant-numeric:tabular-nums;line-height:1.05;user-select:all;-webkit-user-select:all}
+.call{grid-column:2;grid-row:1 / span 3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  width:72px;height:72px;border-radius:50%;background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:700;font-size:13px}
+.call svg{width:26px;height:26px}
+.copy{grid-column:1;justify-self:start;background:none;border:1px solid var(--line);color:var(--muted);border-radius:8px;
+  font:inherit;font-size:13px;padding:4px 10px;cursor:pointer;margin-top:4px}
+.copy:focus-visible,.call:focus-visible,.tel:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.note{background:var(--warn-bg);color:var(--warn-ink);border-radius:14px;padding:14px 16px;font-size:16px}
+.phrase{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:16px}
+.phrase .es{font-weight:600;margin-top:6px}
+.src{color:var(--muted);font-size:13px}
+/* Alcúdia numbers in red */
+.row.alc .tel{color:var(--red)}
+.row.alc .call{background:var(--red);color:var(--red-ink)}
+.row.main.alc{border-color:var(--red)}
+.row.sos .tel{color:var(--ink)}
+.row.sos .call{background:var(--ink);color:var(--bg)}
+.sec{display:flex;flex-direction:column;gap:10px;border-top:2px solid var(--line);padding-top:14px}
+.sec h2{font-size:15px;color:var(--ink)}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);background:var(--bg);-webkit-text-size-adjust:100%}
+body{margin:0}
+*{box-sizing:border-box}
+.install{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px;font-size:15px}
+.install summary{font-weight:600;cursor:pointer}
+.install ol{margin:8px 0 0;padding-left:22px}
+.install li{margin:4px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <input class="lang" type="radio" name="lang" id="l-en" checked>
+  <input class="lang" type="radio" name="lang" id="l-ko">
+  <div class="switch" role="tablist">
+    <label for="l-en">English</label>
+    <label for="l-ko">한국어</label>
+  </div>
+
+  <!-- ENGLISH -->
+  <section class="page p-en" lang="en">
+    <div>
+      <h1>Taxi in Alcúdia</h1>
+      <div class="date">Numbers checked 2 Nov 2026 · tap a number to call</div>
+    </div>
+
+    <h2>Call first</h2>
+    <div class="list">
+      <div class="row main alc">
+        <div class="name">Taxis Alcúdia (association)</div>
+        <div class="where">Alcúdia &amp; Port d'Alcúdia</div>
+        <a class="tel" href="tel:+34971549870">971 549 870</a>
+        <a class="call" href="tel:+34971549870" aria-label="Call Taxis Alcúdia"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>Call</a>
+        <button class="copy" data-n="+34 971 549 870">Copy</button>
+      </div>
+    </div>
+
+    <h2>Alternatives in Alcúdia</h2>
+    <div class="list">
+      <div class="row alc">
+        <div class="name">Taxi Riera Ramis</div>
+        <div class="where">Individual driver, Alcúdia</div>
+        <a class="tel" href="tel:+34616909588">616 909 588</a>
+        <a class="call" href="tel:+34616909588" aria-label="Call Taxi Riera Ramis"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>Call</a>
+        <button class="copy" data-n="+34 616 909 588">Copy</button>
+      </div>
+    </div>
+
+    <h2>Nearby: Pollença</h2>
+    <div class="list">
+      <div class="row">
+        <div class="name">Radio Taxi Pollença</div>
+        <div class="where">Pollença &amp; Port de Pollença</div>
+        <a class="tel" href="tel:+34971866213">971 866 213</a>
+        <a class="call" href="tel:+34971866213" aria-label="Call Radio Taxi Pollença"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>Call</a>
+        <button class="copy" data-n="+34 971 866 213">Copy</button>
+      </div>
+    </div>
+
+    <div class="note">Taxis from other towns may not be allowed to pick you up in Alcúdia outside the summer season. Ask when you call, or book ahead.</div>
+
+    <div class="phrase">What to say on the phone:
+      <div class="es">“Hola, necesito un taxi en Carrer de Canet del Rosselló 19, Alcúdia, por favor.”</div>
+      <div class="src">Pick-up address: Carrer de Canet del Rosselló 19, 07400 Alcúdia</div>
+    </div>
+
+    <div class="sec">
+      <h2>Accident or someone missing</h2>
+      <div class="list">
+        <div class="row sos">
+          <div class="name">Emergency 112</div>
+          <div class="where">Ambulance, police, fire · free</div>
+          <a class="tel" href="tel:112">112</a>
+          <a class="call" href="tel:112" aria-label="Call 112"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>Call</a>
+          <button class="copy" data-n="112">Copy</button>
+        </div>
+        <div class="row alc">
+          <div class="name">Policía Local Alcúdia</div>
+          <div class="where">Accidents in town · ask if someone was taken to hospital · C/ Bastió de Sant Ferran 3</div>
+          <a class="tel" href="tel:+34971545006">971 545 006</a>
+          <a class="call" href="tel:+34971545006" aria-label="Call Policía Local Alcúdia"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>Call</a>
+          <button class="copy" data-n="+34 971 545 006">Copy</button>
+        </div>
+        <div class="row alc">
+          <div class="name">Guardia Civil Port d'Alcúdia</div>
+          <div class="where">Accidents on roads outside town</div>
+          <a class="tel" href="tel:+34971546908">971 546 908</a>
+          <a class="call" href="tel:+34971546908" aria-label="Call Guardia Civil Port d'Alcúdia"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>Call</a>
+          <button class="copy" data-n="+34 971 546 908">Copy</button>
+        </div>
+      </div>
+      <div class="phrase">What to say:
+        <div class="es">“Busco a Ronald Konitzer. Puede haber tenido un accidente. ¿Saben si está en un hospital?”</div>
+      </div>
+    </div>
+
+    <details class="install">
+      <summary>Install on iPhone</summary>
+      <ol>
+        <li>Open this page in <b>Safari</b>.</li>
+        <li>Tap <b>Share</b> (square with an arrow up).</li>
+        <li>Tap <b>Add to Home Screen</b>, then <b>Add</b>.</li>
+        <li>Open it from the new <b>Taxi</b> icon. It also works without internet.</li>
+      </ol>
+    </details>
+
+    <div class="src">Sources: TIB official taxi list (tib.org), Páginas Amarillas, Alcúdia tourism office (alcudiamallorca.com).</div>
+  </section>
+
+  <!-- KOREAN -->
+  <section class="page p-ko" lang="ko">
+    <div>
+      <h1>알쿠디아 택시</h1>
+      <div class="date">2026년 11월 2일 확인 · 번호를 누르면 전화 연결</div>
+    </div>
+
+    <h2>먼저 전화하기</h2>
+    <div class="list">
+      <div class="row main alc">
+        <div class="name">알쿠디아 택시 협회</div>
+        <div class="where">알쿠디아 · 포트 다르쿠디아</div>
+        <a class="tel" href="tel:+34971549870">971 549 870</a>
+        <a class="call" href="tel:+34971549870" aria-label="알쿠디아 택시 협회에 전화"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>전화</a>
+        <button class="copy" data-n="+34 971 549 870">복사</button>
+      </div>
+    </div>
+
+    <h2>알쿠디아 다른 택시</h2>
+    <div class="list">
+      <div class="row alc">
+        <div class="name">Taxi Riera Ramis</div>
+        <div class="where">알쿠디아 개인 택시 기사</div>
+        <a class="tel" href="tel:+34616909588">616 909 588</a>
+        <a class="call" href="tel:+34616909588" aria-label="Taxi Riera Ramis에 전화"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>전화</a>
+        <button class="copy" data-n="+34 616 909 588">복사</button>
+      </div>
+    </div>
+
+    <h2>근처: 포옌사</h2>
+    <div class="list">
+      <div class="row">
+        <div class="name">Radio Taxi Pollença</div>
+        <div class="where">포옌사 · 포트 데 포옌사</div>
+        <a class="tel" href="tel:+34971866213">971 866 213</a>
+        <a class="call" href="tel:+34971866213" aria-label="Radio Taxi Pollença에 전화"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>전화</a>
+        <button class="copy" data-n="+34 971 866 213">복사</button>
+      </div>
+    </div>
+
+    <div class="note">다른 마을 택시는 여름 성수기 외에는 알쿠디아에서 손님을 태우지 못할 수 있습니다. 전화할 때 물어보거나 미리 예약하세요.</div>
+
+    <div class="phrase">전화로 이렇게 말하세요 (스페인어):
+      <div class="es">“Hola, necesito un taxi en Carrer de Canet del Rosselló 19, Alcúdia, por favor.”</div>
+      <div class="src">뜻: 안녕하세요, 알쿠디아 Carrer de Canet del Rosselló 19번지로 택시 한 대 부탁합니다.</div>
+      <div class="src">탑승 주소: Carrer de Canet del Rosselló 19, 07400 Alcúdia</div>
+    </div>
+
+    <div class="sec">
+      <h2>사고 · 사람을 찾을 때</h2>
+      <div class="list">
+        <div class="row sos">
+          <div class="name">긴급 전화 112</div>
+          <div class="where">구급차 · 경찰 · 소방 · 무료</div>
+          <a class="tel" href="tel:112">112</a>
+          <a class="call" href="tel:112" aria-label="112에 전화"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>전화</a>
+          <button class="copy" data-n="112">복사</button>
+        </div>
+        <div class="row alc">
+          <div class="name">알쿠디아 지역 경찰 (Policía Local)</div>
+          <div class="where">시내 사고 · 병원으로 이송됐는지 문의 · C/ Bastió de Sant Ferran 3</div>
+          <a class="tel" href="tel:+34971545006">971 545 006</a>
+          <a class="call" href="tel:+34971545006" aria-label="알쿠디아 지역 경찰에 전화"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>전화</a>
+          <button class="copy" data-n="+34 971 545 006">복사</button>
+        </div>
+        <div class="row alc">
+          <div class="name">국가 경찰 (Guardia Civil) 포트 다르쿠디아</div>
+          <div class="where">시외 도로 교통사고</div>
+          <a class="tel" href="tel:+34971546908">971 546 908</a>
+          <a class="call" href="tel:+34971546908" aria-label="Guardia Civil에 전화"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>전화</a>
+          <button class="copy" data-n="+34 971 546 908">복사</button>
+        </div>
+      </div>
+      <div class="phrase">이렇게 말하세요 (스페인어):
+        <div class="es">“Busco a Ronald Konitzer. Puede haber tenido un accidente. ¿Saben si está en un hospital?”</div>
+        <div class="src">뜻: Ronald Konitzer를 찾고 있습니다. 사고를 당했을 수 있습니다. 병원에 있는지 아시나요?</div>
+      </div>
+    </div>
+
+    <details class="install">
+      <summary>아이폰에 설치하기</summary>
+      <ol>
+        <li>이 페이지를 <b>Safari</b>에서 엽니다.</li>
+        <li><b>공유</b> 버튼(위쪽 화살표가 있는 네모)을 누릅니다.</li>
+        <li><b>홈 화면에 추가</b>를 누른 다음 <b>추가</b>를 누릅니다.</li>
+        <li>홈 화면의 새 <b>Taxi</b> 아이콘으로 엽니다. 인터넷이 없어도 열립니다.</li>
+      </ol>
+    </details>
+
+    <div class="src">출처: TIB 공식 택시 목록 (tib.org), Páginas Amarillas, 알쿠디아 관광 안내 (alcudiamallorca.com).</div>
+  </section>
+</div>
+
+<script>
+(function(){
+  var KEY='at1_lang';
+  var en=document.getElementById('l-en'), ko=document.getElementById('l-ko');
+  try{ if(localStorage.getItem(KEY)==='ko'){ ko.checked=true; } }catch(e){}
+  function save(v){ try{ localStorage.setItem(KEY,v); }catch(e){} }
+  en.addEventListener('change',function(){ save('en'); });
+  ko.addEventListener('change',function(){ save('ko'); });
+
+  var btns=document.querySelectorAll('.copy');
+  Array.prototype.forEach.call(btns,function(b){
+    b.addEventListener('click',function(){
+      var n=b.getAttribute('data-n'), t=b.textContent;
+      var sec=b.closest ? b.closest('[lang]') : null;
+      var done=(sec && sec.getAttribute('lang')==='ko') ? '복사됨' : 'Copied';
+      function ok(){ b.textContent=done; setTimeout(function(){ b.textContent=t; },1500); }
+      try{ navigator.clipboard.writeText(n).then(ok,function(){ sel(b); }); }catch(e){ sel(b); }
+    });
+  });
+  function sel(b){
+    var a=b.parentNode.querySelector('.tel');
+    var r=document.createRange(); r.selectNodeContents(a);
+    var s=window.getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',function(){
+      navigator.serviceWorker.register('sw.js').then(function(){},function(){});
+    });
+  }
+})();
+</script>
+</body>
+</html>
