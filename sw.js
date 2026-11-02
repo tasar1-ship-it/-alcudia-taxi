@@ -1,4 +1,4 @@
-var CACHE = 'alcudia-taxi-v2';
+var CACHE = 'alcudia-taxi-v3';
 var SHELL = ['./', 'index.html', 'manifest.json', 'icon-180.png', 'icon-512.png'];
 
 self.addEventListener('install', function (e) {
@@ -15,7 +15,7 @@ self.addEventListener('activate', function (e) {
 self.addEventListener('fetch', function (e) {
   if (e.request.method !== 'GET') { return; }
   e.respondWith(
-    fetch(e.request).then(function (r) {
+    fetch(e.request, { cache: 'no-store' }).then(function (r) {
       var copy = r.clone();
       caches.open(CACHE).then(function (c) { c.put(e.request, copy); });
       return r;

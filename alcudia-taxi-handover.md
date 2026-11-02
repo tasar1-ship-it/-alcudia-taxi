@@ -3,11 +3,11 @@
 - Live URL: https://tasar1-ship-it.github.io/-alcudia-taxi/
 - Repo: tasar1-ship-it/-alcudia-taxi (leading hyphen in the name) (GitHub Pages, main branch, root)
 - For: MJ and Ronald, iPhone home-screen app
-- Current version: service worker `alcudia-taxi-v2` (2 Nov 2026)
+- Current version: service worker `alcudia-taxi-v3` (2 Nov 2026)
 
 ## Files
 - `index.html` — the whole app, English / Korean switch (CSS-only radios), inline CSS and ES5 JS
-- `sw.js` — offline cache; network first, cache fallback. Bump `CACHE` on every change to a cached file
+- `sw.js` — offline cache; network first (fetch with cache: 'no-store', so edits show on the next open instead of after GitHub's 10-minute cache), cache fallback. Bump `CACHE` on every change to a cached file
 - `manifest.json`, `icon-180.png`, `icon-512.png` — home-screen install
 
 ## Constants as they are
