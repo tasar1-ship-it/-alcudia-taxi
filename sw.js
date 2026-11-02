@@ -1,4 +1,4 @@
-var CACHE = 'alcudia-taxi-v1';
+var CACHE = 'alcudia-taxi-v2';
 var SHELL = ['./', 'index.html', 'manifest.json', 'icon-180.png', 'icon-512.png'];
 
 self.addEventListener('install', function (e) {

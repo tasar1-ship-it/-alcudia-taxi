@@ -3,7 +3,7 @@
 - Live URL: https://tasar1-ship-it.github.io/-alcudia-taxi/
 - Repo: tasar1-ship-it/-alcudia-taxi (leading hyphen in the name) (GitHub Pages, main branch, root)
 - For: MJ and Ronald, iPhone home-screen app
-- Current version: service worker `alcudia-taxi-v1` (2 Nov 2026)
+- Current version: service worker `alcudia-taxi-v2` (2 Nov 2026)
 
 ## Files
 - `index.html` — the whole app, English / Korean switch (CSS-only radios), inline CSS and ES5 JS
@@ -19,6 +19,7 @@
 ## Content
 - Taxis: Taxis Alcúdia 971 549 870 (main), Taxi Riera Ramis 616 909 588, Radio Taxi Pollença 971 866 213
 - Accident: 112, Policía Local Alcúdia 971 545 006, Guardia Civil Port d'Alcúdia 971 546 908
+- Open Uber button (https://m.uber.com/ul/) under the main taxi number; Uber has no phone booking in Spain (v2)
 - Alcúdia numbers shown in red; 112 in black; Pollença in blue
 - Pick-up address: Carrer de Canet del Rosselló 19, 07400 Alcúdia
 - Numbers checked 2 Nov 2026 (TIB taxi list, Páginas Amarillas, alcudiamallorca.com); none test-called
